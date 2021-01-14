@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import FeatureItem from './FeatureItem';
-import Feature from './Feature';
 import SummaryOption from './SummaryOption';
+import MainSummary from './MainSummary';
+import MainForm from './MainForm';
 // Normalizes string as a slug - a string that is safe to use
 // in both URLs and html attributes
-import slugify from 'slugify';
 
 import './App.css';
 
@@ -46,40 +45,6 @@ class App extends Component {
   };
 
   render() {
-    const features = Object.keys(this.props.features).map((feature, idx) => {
-      const featureHash = feature + '-' + idx;
-      const options = this.props.features[feature].map(item => {
-        const itemHash = slugify(JSON.stringify(item));
-        const featureName = this.state.selected[feature].name;
-        return <FeatureItem item={item} 
-        itemHash={itemHash} 
-        feature={feature} 
-        USCurrencyFormat={USCurrencyFormat} 
-        featureName={featureName} 
-        onUpdateFeature = {this.updateFeature}
-        />
-      });
-
-      return (
-        <Feature 
-        featureHash={featureHash}
-        feature={feature}
-        options={options}
-        />
-      );
-    });
-
-    const summary = Object.keys(this.state.selected).map((feature, idx) => {
-      const featureHash = feature + '-' + idx;
-      const selectedOption = this.state.selected[feature];
-
-     return(<SummaryOption 
-     featureHash={featureHash}
-     feature={feature}
-     selectedOption={selectedOption}
-     USCurrencyFormat={USCurrencyFormat}
-     />)
-    });
 
     const total = Object.keys(this.state.selected).reduce(
       (acc, curr) => acc + this.state.selected[curr].cost,
@@ -92,20 +57,19 @@ class App extends Component {
           <h1>ELF Computing | Laptops</h1>
         </header>
         <main>
-          <form className="main__form">
-            <h2>Customize your laptop</h2>
-            {features}
-          </form>
-          <section className="main__summary">
-            <h2>Your cart</h2>
-            {summary}
-            <div className="summary__total">
-              <div className="summary__total__label">Total</div>
-              <div className="summary__total__value">
-                {USCurrencyFormat.format(total)}
-              </div>
-            </div>
-          </section>
+        <MainForm 
+        features={this.props.features}
+        selectedFeature={this.state.selected}
+        USCurrencyFormat={USCurrencyFormat}
+        onUpdateFeature = {this.updateFeature}
+
+        />
+         <MainSummary 
+         total={total} 
+         USCurrencyFormat={USCurrencyFormat}
+         selectedFeature={this.state.selected}
+         />
+         
         </main>
       </div>
     );
