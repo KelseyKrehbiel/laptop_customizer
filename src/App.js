@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SummaryOption from './SummaryOption';
+import FEATURES from './FEATURES';
 import MainSummary from './MainSummary';
 import MainForm from './MainForm';
 // Normalizes string as a slug - a string that is safe to use
@@ -58,7 +58,7 @@ class App extends Component {
         </header>
         <main>
         <MainForm 
-        features={this.props.features}
+        features={FEATURES}
         selectedFeature={this.state.selected}
         USCurrencyFormat={USCurrencyFormat}
         onUpdateFeature = {this.updateFeature}
