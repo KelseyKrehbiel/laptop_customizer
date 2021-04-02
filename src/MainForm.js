@@ -1,38 +1,30 @@
-import React from 'react';
-import FeatureItem from './FeatureItem';
-import Feature from './Feature';
-import slugify from 'slugify';
+import React, { Component } from "react";
 
-function MainForm(props){
-  const features = Object.keys(props.features).map((feature, idx) => {
-  const featureHash = feature + '-' + idx;
-  const options = props.features[feature].map(item => {
-    const itemHash = slugify(JSON.stringify(item));
-    const featureName = props.selectedFeature[feature].name;
-    return <FeatureItem item={item} 
-    itemHash={itemHash} 
-    feature={feature} 
-    USCurrencyFormat={props.USCurrencyFormat} 
-    featureName={featureName} 
-    onUpdateFeature = {props.onUpdateFeature}
-    />
-  });
+// Normalizes string as a slug - a string that is safe to use
+// in both URLs and html attributes
+import Specs from "./Specs";
 
-  return (
-    <Feature 
-    featureHash={featureHash}
-    feature={feature}
-    options={options}
-    />
-  );
-});
-  
-  return(
-  <form className="main__form">
-    <h2>Customize your laptop</h2>
-    {features}
-  </form>
-  )
+class MainForm extends Component {
+  render() {
+    const features = Object.keys(this.props.features).map((feature, idx) => {
+      return (
+        <Specs
+          feature={feature}
+          idx={idx}
+          features={this.props.features}
+          selected={this.props.selected}
+          updateFeature={this.props.updateFeature}
+        />
+      );
+    });
+
+    return (
+      <form className="main__form">
+        <h2>Customize your laptop</h2>
+        {features}
+      </form>
+    );
+  }
 }
 
 export default MainForm;
